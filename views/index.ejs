@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>FIND TRUSTED LOCAL SERVICE PROVIDERS NEAR YOU</h1>
+    <h2>Electricians, plumbers, tutors, repair services whatever you need , whenever you need</h2>
+    
+    <form action="/user_signup" method="get">
+    <button>FIND SERVICES</button>
+    </form>
+    <form action="/business_signup" method="get">
+    <button>BECOME A PROVIDER</button>
+    </form>
+    <form action="/login" method="get">
+    <P>ALREADY HAVE AN ACCOUNT?</P>
+    <button>LOGIN</button>
+    </form>
+
+    <h2>CURRENT SERVICES IN YOUR AREA</h2>
+
+    <label for="area">Select Area</label>
+<select id="area" name="area">
+  <option value="">All areas</option>
+  <option value="Salt Lake">Salt Lake</option>
+  <option value="Behala">Behala</option>
+  <option value="Howrah">Howrah</option>
+  <option value="Sealdah">Sealdah</option>
+</select>
+
+<div class="categories">
+  <a href="/services?category=Electrician" class="category">Electrician</a>
+  <a href="/services?category=Plumber" class="category">Plumber</a>
+  <a href="/services?category=AC Repair" class="category">AC Repair</a>
+  <a href="/services?category=Tutor" class="category">Tutor</a>
+  <a href="/services?category=Computer Repair" class="category">Computer Repair</a>
+  <a href="/services?category=Cleaning" class="category">Cleaning</a>
+</div>
+</body>
+</html>

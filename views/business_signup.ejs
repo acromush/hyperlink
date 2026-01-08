@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>business signup</title>
+    <link rel="stylesheet" href="./styles/signup.css" />
+</head>
+<body>
+    <!-- From Uiverse.io by ammarsaa --> 
+<form class="form" action="/add_business" method="post">
+    <p class="title">Sign up</p>
+    <p class="message">Signup now and get full access to our app. </p>
+        <div class="flex">
+        <label>
+            <input class="input" type="text" name="fName" placeholder="" required="" autocomplete="off" autofocus="true" />
+            <span>Firstname</span>
+        </label>
+
+        <label>
+            <input class="input" type="text" name="lName" placeholder="" required="" autocomplete="off" autofocus="true">
+            <span>Lastname</span>
+        </label>
+    </div>  
+            
+    <label>
+        <input class="input" type="email" name="email" placeholder="" required="">
+        <span>Email</span>
+    </label> 
+        
+    <label>
+        <input class="input" type="password" name="password" placeholder="" required="">
+        <span>Password</span>
+    </label>
+    <label>
+        <input class="input" type="password" name="cpassword" placeholder="" required="">
+        <span>Confirm password</span>
+    </label>
+    <button class="submit" type="submit" name="submit" value="">Submit</button>
+    <p class="signin">Already have an acount ? <a href="#">Signin</a> </p>
+</form>
+</body>
+</html>
