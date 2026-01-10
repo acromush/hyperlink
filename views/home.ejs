@@ -1,12 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>home</title>
+  <meta charset="UTF-8" />
+  <title>Hyperlink | Local Services</title>
+  <link rel="stylesheet" href="./styles/home.css" />
 </head>
 <body>
-    <h1>HELLO</h1>
-    <%= user.name%>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="logo">Hyperlink</div>
+
+    <div class="header-right">
+      <select class="area-select">
+        <option>Select Area</option>
+        <option>Kolkata</option>
+        <option>Howrah</option>
+        <option>Salt Lake</option>
+      </select>
+          <h1>HELLO <%= user.name%> </h1>
+      <button class="location-btn">📍 Use My Location</button>
+    </div>
+  </header>
+
+  <!-- SEARCH BAR -->
+  <div class="search-container">
+    <input
+      type="text"
+      placeholder="Search services like plumber, tutor, carpenter..."
+      class="search-input"
+    />
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main">
+
+    <!-- LEFT SERVICES -->
+    <aside class="services">
+      <h3>Our Services</h3>
+      <ul>
+        <li>Plumber</li>
+        <li>Carpenter</li>
+        <li>Tutor</li>
+        <li>Maid</li>
+        <li>Electrician</li>
+        <li>Painter</li>
+      </ul>
+    </aside>
+
+    <!-- BODY -->
+    <section class="content">
+
+      <!-- SERVICE RESULTS -->
+      <div class="service-results">
+        <!-- Example cards -->
+        <div class="service-card">Plumber near you</div>
+        <div class="service-card">Carpenter near you</div>
+        <div class="service-card">Home Tutor available</div>
+      </div>
+
+      <!-- MAP (default view when no search) -->
+      <div class="map-container">
+        <iframe
+          src="https://www.google.com/maps?q=kolkata&output=embed"
+          loading="lazy">
+        </iframe>
+      </div>
+
+    </section>
+
+  </div>
+
 </body>
 </html>
