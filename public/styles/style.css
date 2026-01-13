@@ -1,0 +1,146 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  color: #fff;
+}
+
+.hero {
+  position: relative;
+  min-height: 100vh;
+  background: url("https://images.unsplash.com/photo-1600880292203-757bb62b4baf")
+    center/cover no-repeat;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    rgba(15, 23, 42, 0.95),
+    rgba(30, 64, 175, 0.85)
+  );
+}
+
+.navbar {
+  position: relative;
+  z-index: 2;
+  padding: 20px 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.login-btn {
+  color: #fff;
+  text-decoration: none;
+  border: 1px solid rgba(255,255,255,0.3);
+  padding: 8px 18px;
+  border-radius: 8px;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 60px;
+  padding: 80px 60px;
+  align-items: center;
+}
+
+.left h1 {
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.left p {
+  margin-top: 20px;
+  font-size: 18px;
+  opacity: 0.9;
+}
+
+.cta-buttons {
+  margin-top: 30px;
+  display: flex;
+  gap: 16px;
+}
+
+.btn {
+  padding: 14px 28px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.primary {
+  background: #22c55e;
+  color: #0f172a;
+}
+
+.secondary {
+  border: 1px solid rgba(255,255,255,0.4);
+  color: #fff;
+}
+
+.features {
+  margin-top: 25px;
+  display: flex;
+  gap: 20px;
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+.card {
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+
+.card h2 {
+  margin-bottom: 20px;
+}
+
+.card input {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+}
+
+.card button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: #3b82f6;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.small-text {
+  margin-top: 12px;
+  font-size: 13px;
+  text-align: center;
+}
+
+.small-text a {
+  color: #93c5fd;
+  text-decoration: none;
+}

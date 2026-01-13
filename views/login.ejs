@@ -1,28 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>login</title>
     <link rel="stylesheet" href="./styles/signup.css" />
-</head>
-<body>
-    <!-- From Uiverse.io by ammarsaa --> 
-<form class="form" action="/login_check" method="post">
-    <p class="title">LOGIN</p>
-    <p class="message">login to your account</p>
-        <div class="login_flex"> 
-    <label class="login_input">
-        <input class="input" type="email" name="email" placeholder="" required="">
+  </head>
+  <body>
+    <form class="form" action="/login_check" method="post">
+      <p class="title">LOGIN</p>
+      <p class="message">login to your account</p>
+      <label class="login_input">
+        <input
+          class="input"
+          type="email"
+          name="email"
+          placeholder=""
+          required=""
+        />
         <span>Email</span>
-    </label> 
-        
-    <label class="login_input">
-        <input class="input" type="password" name="password" placeholder="" required="">
+      </label>
+
+      <label class="login_input">
+        <input
+          class="input"
+          type="password"
+          name="password"
+          placeholder=""
+          required=""
+        />
         <span>Password</span>
-    </label>
-    <button class="submit" type="submit" name="submit" value="">Submit</button>
-    <p class="signin">Don't have an acount ? <a href="#">Signup</a> </p>
-</form>
-</body>
+      </label>
+      <button class="submit" type="submit" name="submit" value="">
+        Login
+      </button>
+      <p class="signin">Don't have an acount ? <a href="#">Signup</a></p>
+    </form>
+  </body>
 </html>

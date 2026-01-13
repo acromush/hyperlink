@@ -1,43 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>FIND TRUSTED LOCAL SERVICE PROVIDERS NEAR YOU</h1>
-    <h2>Electricians, plumbers, tutors, repair services whatever you need , whenever you need</h2>
-    
-    <form action="/user_signup" method="get">
-    <button>FIND SERVICES</button>
-    </form>
-    <form action="/business_signup" method="get">
-    <button>BECOME A PROVIDER</button>
-    </form>
-    <form action="/login" method="get">
-    <P>ALREADY HAVE AN ACCOUNT?</P>
-    <button>LOGIN</button>
-    </form>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hyperlink - Find Trusted Local Services</title>
+    <link rel="stylesheet" href="./styles/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="hero">
+      <div class="overlay"></div>
 
-    <h2>CURRENT SERVICES IN YOUR AREA</h2>
+      <header class="navbar">
+        <div class="logo">Hyperlink</div>
+        <div class="nav-actions">
+          <a href="/login" class="login-btn">Login</a>
+        </div>
+      </header>
 
-    <label for="area">Select Area</label>
-<select id="area" name="area">
-  <option value="">All areas</option>
-  <option value="Salt Lake">Salt Lake</option>
-  <option value="Behala">Behala</option>
-  <option value="Howrah">Howrah</option>
-  <option value="Sealdah">Sealdah</option>
-</select>
+      <div class="hero-content">
+        <div class="left">
+          <h1>Find trusted local services<br />near you</h1>
+          <p>
+            Electricians, plumbers, tutors, repair experts. Real professionals.
+            Real locations. No nonsense.
+          </p>
 
-<div class="categories">
-  <a href="/services?category=Electrician" class="category">Electrician</a>
-  <a href="/services?category=Plumber" class="category">Plumber</a>
-  <a href="/services?category=AC Repair" class="category">AC Repair</a>
-  <a href="/services?category=Tutor" class="category">Tutor</a>
-  <a href="/services?category=Computer Repair" class="category">Computer Repair</a>
-  <a href="/services?category=Cleaning" class="category">Cleaning</a>
-</div>
-</body>
+          <div class="cta-buttons">
+            <a href="/user_signup" class="btn primary">Find Services</a>
+            <a href="/business_signup" class="btn secondary"
+              >Become a Provider</a
+            >
+          </div>
+
+          <div class="features">
+            <span>✔ Verified providers</span>
+            <span>✔ Location based search</span>
+            <span>✔ Fast booking</span>
+          </div>
+        </div>
+
+        <div class="right">
+          <div class="card">
+            <h2>Quick Login</h2>
+            <form action="/login_check" method="post">
+              <input
+                class="input"
+                type="email"
+                name="email"
+                placeholder="Email"
+                required=""
+              />
+              <input
+                class="input"
+                type="password"
+                name="password"
+                placeholder="Password"
+                required=""
+              />
+              <button type="submit" name="submit" value="">Login</button>
+              <p class="small-text">
+                Don’t have an account? <a href="/user_signup">Create one</a>
+              </p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>
