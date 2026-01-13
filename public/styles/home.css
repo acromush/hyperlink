@@ -41,6 +41,23 @@ body {
   font-weight: bold;
 }
 
+.profile {
+  display: flex;
+  margin: 2%;
+  align-items:center;
+}
+.name{
+  margin: 2%;
+}
+
+.pic {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ddd;
+}
+
 /* SEARCH BAR */
 .search-container {
   display: flex;

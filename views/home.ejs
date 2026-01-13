@@ -1,75 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Hyperlink | Local Services</title>
-  <link rel="stylesheet" href="./styles/home.css" />
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hyperlink | Local Services</title>
+    <link rel="stylesheet" href="./styles/home.css" />
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header class="header">
+      <div class="logo">Hyperlink</div>
+      <div class="header-right">
+        <select class="area-select">
+          <option>Select Area</option>
+          <option>Kolkata</option>
+          <option>Howrah</option>
+          <option>Salt Lake</option>
+        </select>
+        <!-- <h1>Hello <%= user.name%> </h1> -->
+        <button class="location-btn">📍 Use My Location</button>
+      </div>
+    </header>
 
-  <!-- HEADER -->
-  <header class="header">
-    <div class="logo">Hyperlink</div>
-
-    <div class="header-right">
-      <select class="area-select">
-        <option>Select Area</option>
-        <option>Kolkata</option>
-        <option>Howrah</option>
-        <option>Salt Lake</option>
-      </select>
-          <h1>Hello <%= user.name%> </h1>
-      <button class="location-btn">📍 Use My Location</button>
+    <div class="profile">
+      <img
+        src="/uploads/profile.jpeg"
+        class="pic"
+        alt="Hyperlink app logo"
+        loading="lazy"
+      />
+      <h3 class="name"><%= user.name%> </h3>
     </div>
-  </header>
 
-  <!-- SEARCH BAR -->
-  <div class="search-container">
-    <input
-      type="text"
-      placeholder="Search services like plumber, tutor, carpenter..."
-      class="search-input"
-    />
-  </div>
+    <!-- SEARCH BAR -->
+    <div class="search-container">
+      <input
+        type="text"
+        placeholder="Search services like plumber, tutor, carpenter..."
+        class="search-input"
+      />
+    </div>
 
-  <!-- MAIN CONTENT -->
-  <div class="main">
+    <!-- MAIN CONTENT -->
+    <div class="main">
+      <!-- LEFT SERVICES -->
+      <aside class="services">
+        <h3>Our Services</h3>
+        <ul>
+          <li>Plumber</li>
+          <li>Carpenter</li>
+          <li>Tutor</li>
+          <li>Maid</li>
+          <li>Electrician</li>
+          <li>Painter</li>
+        </ul>
+      </aside>
 
-    <!-- LEFT SERVICES -->
-    <aside class="services">
-      <h3>Our Services</h3>
-      <ul>
-        <li>Plumber</li>
-        <li>Carpenter</li>
-        <li>Tutor</li>
-        <li>Maid</li>
-        <li>Electrician</li>
-        <li>Painter</li>
-      </ul>
-    </aside>
+      <!-- BODY -->
+      <section class="content">
+        <!-- SERVICE RESULTS -->
+        <div class="service-results">
+          <!-- Example cards -->
+          <div class="service-card">Plumber near you</div>
+          <div class="service-card">Carpenter near you</div>
+          <div class="service-card">Home Tutor available</div>
+        </div>
 
-    <!-- BODY -->
-    <section class="content">
-
-      <!-- SERVICE RESULTS -->
-      <div class="service-results">
-        <!-- Example cards -->
-        <div class="service-card">Plumber near you</div>
-        <div class="service-card">Carpenter near you</div>
-        <div class="service-card">Home Tutor available</div>
-      </div>
-
-      <!-- MAP (default view when no search) -->
-      <div class="map-container">
-        <iframe
-          src="https://www.google.com/maps?q=kolkata&output=embed"
-          loading="lazy">
-        </iframe>
-      </div>
-
-    </section>
-
-  </div>
-
-</body>
+        <!-- MAP (default view when no search) -->
+        <div class="map-container">
+          <iframe
+            src="https://www.google.com/maps?q=kolkata&output=embed"
+            loading="lazy"
+          >
+          </iframe>
+        </div>
+      </section>
+    </div>
+  </body>
 </html>
