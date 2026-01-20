@@ -5,11 +5,27 @@ import path from "path";
 import { fileURLToPath } from "url";
 import bcrypt from "bcrypt";
 import session from "express-session";
+import multer from "multer"
+
+// MULTER CONFIG FOR PROFILE PICS
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "public/uploads");
+  },
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    cb(null, `user_${req.session.userId}_${Date.now()}${ext}`);
+  },
+});
+
+const upload = multer({ storage });
 
 const app = express();
 const port = 3000;
 
+
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(express.static("public"));
 
 app.use(session({
@@ -50,7 +66,7 @@ async function getUserByEmail(email) {
 }
 async function getUserById(id) {
   const result = await db.query(
-    "SELECT id, name, email, role FROM users WHERE id = $1",
+    "SELECT id, name, email, role, profile_pic FROM users WHERE id = $1",
     [id]
   );
   return result.rows[0];
@@ -83,7 +99,7 @@ app.get("/login", async(req,res) => {
 });
 
 app.post("/add_user", async (req,res) => {
-    const { fName, lName, email, password, cpassword } = req.body;
+    const { fName, lName, email, password} = req.body;
     const password_hash = await hash(password);
     const role = "customer";
     try{
@@ -100,7 +116,7 @@ app.post("/add_user", async (req,res) => {
 });
 
 app.post("/add_business", async (req,res) => {
-    const { fName, lName, email, password, cpassword } = req.body;
+    const { fName, lName, email, password} = req.body;
     const password_hash = await hash(password);
     const role = "business";
     try{
@@ -143,6 +159,39 @@ app.get("/services", async (req,res) => {
 app.get("/services_id", async (req,res) => {
     res.render("services_id.ejs");
 });
+
+app.post(
+  "/profile/upload-pic",
+  upload.single("profilePic"),
+  async (req, res) => {
+    if (!req.session.userId) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    const imagePath = `/uploads/${req.file.filename}`;
+await db.query(
+  "UPDATE users SET profile_pic = $1 WHERE id = $2",
+  [imagePath, req.session.userId]
+);
+    res.json({ path: imagePath });
+  }
+);
+
+app.post("/profile/remove-pic", async (req, res) => {
+  if (!req.session.userId) {
+    return res.sendStatus(401);
+  }
+
+  const defaultPic = "/uploads/default_pic.jpeg";
+
+  await db.query(
+    "UPDATE users SET profile_pic = $1 WHERE id = $2",
+    [defaultPic, req.session.userId]
+  );
+
+  res.sendStatus(200);
+});
+
 
 app.listen(port, () => {
    console.log(`server running on port ${port}.`);
