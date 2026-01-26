@@ -9,7 +9,9 @@ body {
   background: #f4f6f8;
 }
 
-/* HEADER */
+/* ============================
+   HEADER
+   ============================ */
 .header {
   display: flex;
   justify-content: space-between;
@@ -41,12 +43,16 @@ body {
   font-weight: bold;
 }
 
+/* ============================
+   PROFILE ICONS
+   ============================ */
 .profile {
   display: flex;
   margin: 2%;
-  align-items:center;
+  align-items: center;
 }
-.name{
+
+.name {
   margin: 2%;
 }
 
@@ -58,7 +64,27 @@ body {
   border: 2px solid #ddd;
 }
 
-/* SEARCH BAR */
+.profile-trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.profile-trigger img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.hamburger {
+  font-size: 20px;
+}
+
+/* ============================
+   SEARCH BAR
+   ============================ */
 .search-container {
   display: flex;
   justify-content: center;
@@ -73,7 +99,9 @@ body {
   border-radius: 6px;
 }
 
-/* MAIN LAYOUT */
+/* ============================
+   MAIN LAYOUT
+   ============================ */
 .main {
   display: flex;
 }
@@ -122,7 +150,7 @@ body {
   background: #fff;
   padding: 15px;
   border-radius: 6px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 /* MAP */
@@ -139,26 +167,9 @@ body {
   border: 0;
 }
 
-/* PROFILE TRIGGER */
-.profile-trigger {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-}
-
-.profile-trigger img {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.hamburger {
-  font-size: 20px;
-}
-
-/* SIDEBAR */
+/* ============================
+   PROFILE SIDEBAR
+   ============================ */
 .profile-sidebar {
   position: fixed;
   top: 0;
@@ -166,7 +177,7 @@ body {
   width: 300px;
   height: 100%;
   background: #fff;
-  box-shadow: -4px 0 15px rgba(0,0,0,0.15);
+  box-shadow: -4px 0 15px rgba(0, 0, 0, 0.15);
   transition: right 0.3s ease;
   z-index: 1000;
 }
@@ -214,11 +225,11 @@ body {
   color: #d9534f;
 }
 
-/* OVERLAY */
+/* OVERLAY (Background dimming) */
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.4);
+  background: rgba(0, 0, 0, 0.4);
   display: none;
   z-index: 999;
 }
@@ -227,26 +238,7 @@ body {
   display: block;
 }
 
-/* RESPONSIVE */
-@media (max-width: 900px) {
-  .main {
-    flex-direction: column;
-  }
-
-  .services {
-    width: 100%;
-    border-right: none;
-    border-bottom: 1px solid #ddd;
-  }
-
-  .content {
-    width: 100%;
-  }
-
-  .search-input {
-    width: 90%;
-  }
-}
+/* Profile Picture Actions */
 .profile-large {
   width: 120px;
   height: 120px;
@@ -280,24 +272,79 @@ body {
   background: #f8d7da;
   color: #842029;
 }
+
+/* ============================
+   CROP MODAL (FIXED)
+   ============================ */
 .crop-modal {
   position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.7);
-  display: none;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Darker background so you can focus on the image */
+  background: rgba(0, 0, 0, 0.9);
+  display: none; /* Hidden by default */
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
-  pointer-events: auto;
+  /* Z-index must be higher than sidebar (1000) */
+  z-index: 10000; 
 }
 
-.crop-modal img {
-  max-width: 300px;
-  max-height: 300px;
+/* CRITICAL FIX: 
+   The image ID used by CropperJS. 
+   Must be 'block' and 'max-width: 100%' or it will break.
+*/
+#cropImage {
+  display: block;
+  max-width: 90%; 
+  max-height: 70vh; /* Keeps image from being too tall for the screen */
+  margin: 0 auto;
 }
 
+/* Style for the Upload button inside the modal */
 .crop-modal button {
-  margin-top: 15px;
-  padding: 10px 20px;
+  margin-top: 20px;
+  padding: 12px 30px;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 10001;
+}
+
+.crop-modal button:hover {
+  background-color: #218838;
+}
+
+.crop-modal button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+/* ============================
+   RESPONSIVE DESIGN
+   ============================ */
+@media (max-width: 900px) {
+  .main {
+    flex-direction: column;
+  }
+
+  .services {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .content {
+    width: 100%;
+  }
+
+  .search-input {
+    width: 90%;
+  }
 }

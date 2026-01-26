@@ -5,35 +5,39 @@ import path from "path";
 import { fileURLToPath } from "url";
 import bcrypt from "bcrypt";
 import session from "express-session";
-import multer from "multer"
+import multer from "multer";
+import fs from "fs"; // Used to create the uploads folder if missing
 
-// MULTER CONFIG FOR PROFILE PICS
+// 1. SETUP DIRECTORIES & FILE PATHS (ES MODULES FIX)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// 2. MULTER CONFIGURATION (THE FIX)
+// This must come BEFORE the app is initialized so 'upload' is ready.
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
+    const uploadDir = path.join(__dirname, "public/uploads");
+    
+    // Safety check: Create folder if it doesn't exist
+    if (!fs.existsSync(uploadDir)){
+        fs.mkdirSync(uploadDir, { recursive: true });
+    }
+    
     cb(null, "public/uploads");
   },
   filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
+    // Uses the extension from the blob sent by frontend
+    const ext = path.extname(file.originalname); 
     cb(null, `user_${req.session.userId}_${Date.now()}${ext}`);
   },
 });
 
 const upload = multer({ storage });
 
+
+// 3. APP & DB SETUP
 const app = express();
 const port = 3000;
-
-
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(express.static("public"));
-
-app.use(session({
-  secret: "something-not-stupid",
-  resave: false,
-  saveUninitialized: false,
-}));
-
 
 const db = new pg.Client({
   user: "postgres",
@@ -45,9 +49,18 @@ const db = new pg.Client({
 
 db.connect();
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// 4. MIDDLEWARE
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.static("public"));
 
+app.use(session({
+  secret: "something-not-stupid",
+  resave: false,
+  saveUninitialized: false,
+}));
+
+// 5. HELPER FUNCTIONS
 async function hash(password){
   return await bcrypt.hash(password, 10);
 }
@@ -64,6 +77,7 @@ async function getUserByEmail(email) {
   );
   return result.rows[0];
 }
+
 async function getUserById(id) {
   const result = await db.query(
     "SELECT id, name, email, role, profile_pic FROM users WHERE id = $1",
@@ -73,6 +87,7 @@ async function getUserById(id) {
 }
 
 
+// 6. ROUTES
 app.get("/", async (req,res) => {
     res.render("index.ejs");
 });
@@ -160,20 +175,32 @@ app.get("/services_id", async (req,res) => {
     res.render("services_id.ejs");
 });
 
+// --- PROFILE UPLOAD ROUTE ---
 app.post(
   "/profile/upload-pic",
-  upload.single("profilePic"),
+  upload.single("profilePic"), // Uses the 'upload' middleware configured above
   async (req, res) => {
     if (!req.session.userId) {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
+    // Safety: If no file was uploaded (multer failed or user sent nothing)
+    if (!req.file) {
+        return res.status(400).json({ error: "No file uploaded" });
+    }
+
     const imagePath = `/uploads/${req.file.filename}`;
-await db.query(
-  "UPDATE users SET profile_pic = $1 WHERE id = $2",
-  [imagePath, req.session.userId]
-);
-    res.json({ path: imagePath });
+    
+    try {
+        await db.query(
+          "UPDATE users SET profile_pic = $1 WHERE id = $2",
+          [imagePath, req.session.userId]
+        );
+        res.json({ path: imagePath });
+    } catch (err) {
+        console.error("Database update failed:", err);
+        res.status(500).json({ error: "Database error" });
+    }
   }
 );
 
@@ -192,7 +219,6 @@ app.post("/profile/remove-pic", async (req, res) => {
   res.sendStatus(200);
 });
 
-
 app.listen(port, () => {
    console.log(`server running on port ${port}.`);
-})
+});

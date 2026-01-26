@@ -1,96 +1,131 @@
 document.addEventListener("DOMContentLoaded", () => {
+  console.log("Profile.js loaded");
 
-  const openBtn = document.getElementById("openProfile");
-  const sidebar = document.getElementById("profileSidebar");
-  const overlay = document.getElementById("overlay");
-
-  const fileInput = document.getElementById("fileInput");
-  const profileImage = document.getElementById("profileImage");
-  const changeBtn = document.getElementById("changePic");
-  const removeBtn = document.getElementById("removePic");
-
-  const cropModal = document.getElementById("cropModal");
-  const cropImg = document.getElementById("cropImage");
-  const uploadBtn = document.getElementById("uploadCropped");
-
-  let cropper;
-
-  // OPEN SIDEBAR
-  openBtn.onclick = () => {
-    sidebar.classList.add("active");
-    overlay.classList.add("active");
+  // --- CONFIG ---
+  const ELEMENTS = {
+    fileInput: document.getElementById("fileInput"),
+    changeBtn: document.getElementById("changePic"),
+    cropModal: document.getElementById("cropModal"),
+    cropImg: document.getElementById("cropImage"),
+    uploadBtn: document.getElementById("uploadCropped"),
+    profileImage: document.getElementById("profileImage"),
+    openBtn: document.getElementById("openProfile"),
+    sidebar: document.getElementById("profileSidebar"),
+    overlay: document.getElementById("overlay")
   };
 
-  overlay.onclick = () => {
-    sidebar.classList.remove("active");
-    overlay.classList.remove("active");
-  };
+  let cropper = null;
 
-    // UPLOAD
-// uploadBtn.addEventListener("click", async () => {
+  // --- SIDEBAR LOGIC ---
+  if(ELEMENTS.openBtn) {
+    ELEMENTS.openBtn.onclick = () => {
+      ELEMENTS.sidebar.classList.add("active");
+      ELEMENTS.overlay.classList.add("active");
+    };
+    ELEMENTS.overlay.onclick = () => {
+      ELEMENTS.sidebar.classList.remove("active");
+      ELEMENTS.overlay.classList.remove("active");
+    };
+  }
 
-//   console.log("Upload clicked");
-//   console.log("Cropper:", cropper);
+  // --- TRIGGER SELECT ---
+  if (ELEMENTS.changeBtn) {
+    ELEMENTS.changeBtn.onclick = () => ELEMENTS.fileInput.click();
+  }
 
-//   if (!cropper) {
-//     console.error("Cropper not initialized");
-//     return;
-//   }
+  // --- MAIN LOGIC ---
+  if (ELEMENTS.fileInput) {
+    ELEMENTS.fileInput.onchange = (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
 
-//   const canvas = cropper.getCroppedCanvas({
-//     width: 400,
-//     height: 400,
-//   });
+      const reader = new FileReader();
+      
+      reader.onload = (event) => {
+        // 1. CLEANUP
+        if (cropper) {
+          cropper.destroy();
+          cropper = null;
+        }
 
-//   canvas.toBlob(async (blob) => {
-//     if (!blob) {
-//       console.error("Blob creation failed");
-//       return;
-//     }
+        // 2. SETUP IMAGE
+        ELEMENTS.cropImg.src = event.target.result;
+        ELEMENTS.cropModal.style.display = "flex";
 
-//     const formData = new FormData();
-//     formData.append("profilePic", blob);
+        // 3. WAIT FOR LIBRARY + IMAGE LOAD
+        const startCropper = () => {
+          // Check if library exists
+          if (typeof Cropper === 'undefined') {
+            console.warn("CropperJS not loaded yet... retrying in 50ms");
+            setTimeout(startCropper, 50);
+            return;
+          }
 
-//     const res = await fetch("/profile/upload-pic", {
-//       method: "POST",
-//       body: formData,
-//     });
+          // Initialize
+          try {
+            cropper = new Cropper(ELEMENTS.cropImg, {
+              aspectRatio: 1,
+              viewMode: 1,
+              autoCropArea: 1,
+            });
+            console.log("Cropper started successfully!");
+          } catch (err) {
+            console.error(err);
+            alert("Cropper crashed: " + err.message);
+          }
+        };
 
-//     const data = await res.json();
-//     profileImage.src = data.path;
+        // Give the modal 100ms to render on screen before starting
+        setTimeout(startCropper, 100);
+      };
 
-//     cropper.destroy();
-//     cropModal.style.display = "none";
-//   });
-// });
+      reader.readAsDataURL(file);
+    };
+  }
 
-uploadBtn.addEventListener("click", () => {
-  console.log("Upload clicked");
-});
+  // --- UPLOAD ---
+  if (ELEMENTS.uploadBtn) {
+    ELEMENTS.uploadBtn.onclick = () => {
+      if (!cropper) {
+        alert("Crop failed to start. Please reload the page.");
+        return;
+      }
 
+      const canvas = cropper.getCroppedCanvas({ width: 400, height: 400 });
+      if(!canvas) return alert("Canvas creation failed");
 
-  // CHANGE PIC
-  changeBtn.onclick = () => {
-    fileInput.click();
-  };
+      canvas.toBlob((blob) => {
+        const formData = new FormData();
+        formData.append("profilePic", blob, "profile.png");
 
-  fileInput.onchange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+        // UI Feedback
+        ELEMENTS.uploadBtn.innerText = "Uploading...";
+        ELEMENTS.uploadBtn.disabled = true;
 
-    const reader = new FileReader();
-reader.onload = () => {
-  cropImg.src = reader.result;
-  cropModal.style.display = "flex";
-
-  cropImg.onload = () => {
-    cropper = new Cropper(cropImg, {
-      aspectRatio: 1,
-      viewMode: 1,
-    });
-  };
-};
-
-    reader.readAsDataURL(file);
-  };
+        fetch("/profile/upload-pic", {
+          method: "POST",
+          body: formData,
+        })
+        .then(res => res.json())
+        .then(data => {
+            // Update All Images
+            document.querySelectorAll("img").forEach(img => {
+                if(img.src === ELEMENTS.profileImage.src) img.src = data.path;
+            });
+            ELEMENTS.profileImage.src = data.path;
+            
+            // Close
+            cropper.destroy();
+            cropper = null;
+            ELEMENTS.cropModal.style.display = "none";
+            ELEMENTS.fileInput.value = "";
+        })
+        .catch(err => alert("Upload error"))
+        .finally(() => {
+            ELEMENTS.uploadBtn.innerText = "Upload";
+            ELEMENTS.uploadBtn.disabled = false;
+        });
+      }, "image/png");
+    };
+  }
 });
